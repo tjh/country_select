@@ -1,2 +1,2 @@
 # Install hook code here
-puts "The list of countries provided by this plugin may offend some users. Please review it carefully before you use it"
+puts "Create a 'Country' model with a 'name' field to hold the countries to select from."
