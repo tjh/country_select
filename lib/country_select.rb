@@ -3,7 +3,7 @@ module ActionView
   module Helpers
     module FormOptionsHelper
       COUNTRY_SELECT_MODEL_NAME  = "Country" unless const_defined?("COUNTRY_SELECT_MODEL_NAME")
-      COUNTRY_SELECT_MODEL_FIELD = "name" unless const_defined?("COUNTRY_SELECT_MODEL_FIELD") 
+      COUNTRY_SELECT_MODEL_FIELD = "name"    unless const_defined?("COUNTRY_SELECT_MODEL_FIELD")
       
       # Return select and option tags for the given object and method, using country_options_for_select to generate the list of option tags.
       def country_select(object, method, priority_countries = nil, options = {}, html_options = {})
@@ -19,16 +19,16 @@ module ActionView
 
         if priority_countries
           priority_countries.each do |priority_country|
-            country = Country.find_by_name priority_country
+            country = COUNTRY_SELECT_MODEL_NAME.constantize.find_by_name priority_country
             country_options += options_for_select({ country.name => country.id}, selected)
           end
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
-        return country_options + options_for_select(COUNTRIES.collect {|country| [ country.name, country.id ] }, selected)
+        return country_options + options_for_select(COUNTRIES.collect{ |country| [ country.name, country.id ] }, selected)
       end
       # All the countries included in the country_options output.
-      COUNTRIES = Country.all
+      COUNTRIES = COUNTRY_SELECT_MODEL_NAME.constantize.all
     end
     
     class InstanceTag
