@@ -25,10 +25,8 @@ module ActionView
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
-        return country_options + options_for_select(COUNTRIES.collect{ |country| [ country.name, country.id ] }, selected)
+        return country_options + options_for_select(COUNTRY_SELECT_MODEL_NAME.constantize.all.collect{ |country| [ country.name, country.id ] }, selected)
       end
-      # All the countries included in the country_options output.
-      COUNTRIES = COUNTRY_SELECT_MODEL_NAME.constantize.all
     end
     
     class InstanceTag
