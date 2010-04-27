@@ -18,10 +18,7 @@ module ActionView
         country_options = ""
 
         if priority_countries
-          priority_countries.each do |priority_country|
-            country = COUNTRY_SELECT_MODEL_NAME.constantize.find_by_name priority_country
-            country_options += options_for_select({ country.name => country.id}, selected)
-          end
+          country_options += options_for_select(priority_countries.collect{ |country| [country.name, country.id] }, selected)
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
