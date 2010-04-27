@@ -16,9 +16,19 @@ module ActionView
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
       def country_options_for_select(selected = nil, priority_countries = nil)
         country_options = ""
-
-        if priority_countries
-          country_options += options_for_select(priority_countries.collect{ |country| [country.name, country.id] }, selected)
+        
+        # Verify that there is at least one priority country
+        if priority_countries && priority_countries.size > 0
+          # Attempt to use newer syntax where priority_countries is an array of
+          # country objects, but fall back to accepting an array of strings
+          begin
+            country_options += options_for_select(priority_countries.collect{ |country| [country.name, country.id] }, selected)
+          rescue
+            priority_countries.each do |priority_country|
+              country = COUNTRY_SELECT_MODEL_NAME.constantize.find_by_name priority_country
+              country_options += options_for_select({ country.name => country.id}, selected)
+            end
+          end
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
